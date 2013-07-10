@@ -114,7 +114,7 @@ namespace BookboonSDK
                 var jsonData = ParseResponse(exception.Response);
                 var httpWebResponse = (HttpWebResponse) exception.Response;
 
-                throw new ApiException((string) jsonData.message, (string) jsonData.name, httpWebResponse.StatusCode, exception);
+                throw new ApiException((string) jsonData.message, (string) jsonData.error, httpWebResponse.StatusCode, exception);
             }
         }
 
