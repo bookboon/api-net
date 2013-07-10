@@ -1,0 +1,13 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bookboon</id>
+    <version>1.0</version>
+    <title>Bookboon SDK</title>
+    <authors>bookboon.com Ltd</authors>
+    <projectUrl>https://github.com/bookboon/api-net</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Microsoft .NET SDK for bookboon.com API</description>
+    <tags>bookboon ebooks</tags>
+  </metadata>
+</package>
