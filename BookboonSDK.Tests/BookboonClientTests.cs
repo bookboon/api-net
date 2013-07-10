@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -47,7 +46,7 @@ namespace BookboonSDK.Tests
 
             var task = client.Get("/nosuchthing");
 
-            AssertThrowsApiException(HttpStatusCode.NotFound, task);
+            AssertThrowsApiException("NotFound", task);
         }
 
         [Test]
@@ -57,7 +56,7 @@ namespace BookboonSDK.Tests
 
             var task = client.Get("/recommendations");
 
-            AssertThrowsApiException(HttpStatusCode.Forbidden, task);
+            AssertThrowsApiException("HttpsRequired", task);
         }
 
         [Test]
@@ -68,7 +67,7 @@ namespace BookboonSDK.Tests
 
             var task = client.Get("/recommendations", handle);
 
-            AssertThrowsApiException(HttpStatusCode.Unauthorized, task);
+            AssertThrowsApiException("ApiKeyInvalid", task);
         }
 
         [Test]
@@ -79,10 +78,10 @@ namespace BookboonSDK.Tests
 
             var task = client.Post("/profile", handle, new { email = "invalid", newsletter = false });
 
-            AssertThrowsApiException(HttpStatusCode.BadRequest, task);
+            AssertThrowsApiException("UnacceptableParameterValue", task);
         }
 
-        public static async void AssertThrowsApiException(HttpStatusCode expectedHttpStatusCode, Task task)
+        public static async void AssertThrowsApiException(string expectedErrorCode, Task task)
         {
             try
             {
@@ -92,7 +91,7 @@ namespace BookboonSDK.Tests
             }
             catch (ApiException exception)
             {
-                Assert.AreEqual(expectedHttpStatusCode, exception.HttpStatusCode);
+                Assert.AreEqual(expectedErrorCode, exception.ErrorCode);
             }
         }
 
