@@ -81,8 +81,9 @@ namespace BookboonSDK
         {
             var tokens = parameters
                 .GetType().GetProperties()
-                .Select(x => Uri.EscapeDataString(x.Name) + '=' +
-                    Uri.EscapeDataString(x.GetValue(parameters).ToString()));
+                .SelectMany(x => (x.PropertyType.IsArray ? ((Array) x.GetValue(parameters)).Cast<object>() :
+                    new [] { x.GetValue(parameters) }).Select(y => new { x.Name, Value = y.ToString() }))
+                .Select(x => Uri.EscapeDataString(x.Name) + '=' + Uri.EscapeDataString(x.Value));
 
             return string.Join("&", tokens);
         }
