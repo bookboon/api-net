@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using Newtonsoft.Json;
 
 namespace BookboonSDK
@@ -95,6 +96,22 @@ namespace BookboonSDK
             if (handle != null)
             {
                 request.Headers["Authorization"] = handle.GetAuthorizationHeader();
+            }
+
+            if (HttpContext.Current != null)
+            {
+                var xff = new []
+                {
+                    HttpContext.Current.Request.Headers["X-Forwarded-For"],
+                    HttpContext.Current.Request.UserHostAddress
+                };
+
+                xff = xff.Select(str => str.Trim()).Where(str => !string.IsNullOrEmpty(str)).ToArray();
+
+                if (xff.Any())
+                {
+                    request.Headers["X-Forwarded-For"] = string.Join(", ", xff);
+                }
             }
 
             return request;
